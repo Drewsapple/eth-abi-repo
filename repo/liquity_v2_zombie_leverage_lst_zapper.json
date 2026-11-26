@@ -1,0 +1,986 @@
+[
+  {
+    "type": "constructor",
+    "inputs": [
+      {
+        "name": "_addressesRegistry",
+        "type": "address",
+        "internalType": "contract IAddressesRegistry"
+      },
+      {
+        "name": "_flashLoanProvider",
+        "type": "address",
+        "internalType": "contract IFlashLoanProvider"
+      },
+      {
+        "name": "_exchange",
+        "type": "address",
+        "internalType": "contract IExchange"
+      }
+    ],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "EmptyManager",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "NotBorrower",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "NotOwnerNorAddManager",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "NotOwnerNorRemoveManager",
+    "type": "error",
+    "inputs": []
+  },
+  {
+    "name": "AddManagerUpdated",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "_troveId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "_newAddManager",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "RemoveManagerAndReceiverUpdated",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "_troveId",
+        "type": "uint256",
+        "indexed": true,
+        "internalType": "uint256"
+      },
+      {
+        "name": "_newRemoveManager",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      },
+      {
+        "name": "_newReceiver",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "TroveNFTAddressChanged",
+    "type": "event",
+    "inputs": [
+      {
+        "name": "_newTroveNFTAddress",
+        "type": "address",
+        "indexed": false,
+        "internalType": "address"
+      }
+    ],
+    "anonymous": false
+  },
+  {
+    "name": "WETH",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "contract IWETH"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "addColl",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_troveId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_amount",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "addManagerOf",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "adjustTrove",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_troveId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_collChange",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_isCollIncrease",
+        "type": "bool",
+        "internalType": "bool"
+      },
+      {
+        "name": "_boldChange",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_isDebtIncrease",
+        "type": "bool",
+        "internalType": "bool"
+      },
+      {
+        "name": "_maxUpfrontFee",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "adjustZombieTrove",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_troveId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_collChange",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_isCollIncrease",
+        "type": "bool",
+        "internalType": "bool"
+      },
+      {
+        "name": "_boldChange",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_isDebtIncrease",
+        "type": "bool",
+        "internalType": "bool"
+      },
+      {
+        "name": "_upperHint",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_lowerHint",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_maxUpfrontFee",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "boldToken",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "contract IBoldToken"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "borrowerOperations",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "contract IBorrowerOperations"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "closeTroveFromCollateral",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_troveId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_flashLoanAmount",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_minExpectedCollateral",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "closeTroveToRawETH",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_troveId",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "collToken",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "contract IERC20"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "exchange",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "contract IExchange"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "flashLoanProvider",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "contract IFlashLoanProvider"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "leverDownTrove",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_params",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "troveId",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "flashLoanAmount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "minBoldAmount",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct ILeverageZapper.LeverDownTroveParams"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "leverUpTrove",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_params",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "troveId",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "flashLoanAmount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "boldAmount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "maxUpfrontFee",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct ILeverageZapper.LeverUpTroveParams"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "leverUpTroveWithHints",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_params",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "troveId",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "flashLoanAmount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "boldAmount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "maxUpfrontFee",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct ILeverageZapper.LeverUpTroveParams"
+      },
+      {
+        "name": "_upperHint",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_lowerHint",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "leverageRatioToCollateralRatio",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_inputRatio",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "pure"
+  },
+  {
+    "name": "openLeveragedTroveWithRawETH",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_params",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "owner",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "ownerIndex",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "collAmount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "flashLoanAmount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "boldAmount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "upperHint",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "lowerHint",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "annualInterestRate",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "batchManager",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "maxUpfrontFee",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "addManager",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "removeManager",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "receiver",
+            "type": "address",
+            "internalType": "address"
+          }
+        ],
+        "internalType": "struct ILeverageZapper.OpenLeveragedTroveParams"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "payable"
+  },
+  {
+    "name": "openTroveWithRawETH",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_params",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "owner",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "ownerIndex",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "collAmount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "boldAmount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "upperHint",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "lowerHint",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "annualInterestRate",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "batchManager",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "maxUpfrontFee",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "addManager",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "removeManager",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "receiver",
+            "type": "address",
+            "internalType": "address"
+          }
+        ],
+        "internalType": "struct IZapper.OpenTroveParams"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "stateMutability": "payable"
+  },
+  {
+    "name": "receiveFlashLoanOnCloseTroveFromCollateral",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_params",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "troveId",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "flashLoanAmount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "minExpectedCollateral",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "receiver",
+            "type": "address",
+            "internalType": "address"
+          }
+        ],
+        "internalType": "struct IZapper.CloseTroveParams"
+      },
+      {
+        "name": "_effectiveFlashLoanAmount",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "receiveFlashLoanOnLeverDownTrove",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_params",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "troveId",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "flashLoanAmount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "minBoldAmount",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct ILeverageZapper.LeverDownTroveParams"
+      },
+      {
+        "name": "_effectiveFlashLoanAmount",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "receiveFlashLoanOnLeverUpTrove",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_params",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "troveId",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "flashLoanAmount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "boldAmount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "maxUpfrontFee",
+            "type": "uint256",
+            "internalType": "uint256"
+          }
+        ],
+        "internalType": "struct ILeverageZapper.LeverUpTroveParams"
+      },
+      {
+        "name": "_effectiveFlashLoanAmount",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "receiveFlashLoanOnOpenLeveragedTrove",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_params",
+        "type": "tuple",
+        "components": [
+          {
+            "name": "owner",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "ownerIndex",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "collAmount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "flashLoanAmount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "boldAmount",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "upperHint",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "lowerHint",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "annualInterestRate",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "batchManager",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "maxUpfrontFee",
+            "type": "uint256",
+            "internalType": "uint256"
+          },
+          {
+            "name": "addManager",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "removeManager",
+            "type": "address",
+            "internalType": "address"
+          },
+          {
+            "name": "receiver",
+            "type": "address",
+            "internalType": "address"
+          }
+        ],
+        "internalType": "struct ILeverageZapper.OpenLeveragedTroveParams"
+      },
+      {
+        "name": "_effectiveFlashLoanAmount",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "removeManagerReceiverOf",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [
+      {
+        "name": "manager",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "receiver",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "repayBold",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_troveId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_boldAmount",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "setAddManager",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_troveId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_manager",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "setRemoveManager",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_troveId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_manager",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "setRemoveManagerWithReceiver",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_troveId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_manager",
+        "type": "address",
+        "internalType": "address"
+      },
+      {
+        "name": "_receiver",
+        "type": "address",
+        "internalType": "address"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "troveManager",
+    "type": "function",
+    "inputs": [],
+    "outputs": [
+      {
+        "name": "",
+        "type": "address",
+        "internalType": "contract ITroveManager"
+      }
+    ],
+    "stateMutability": "view"
+  },
+  {
+    "name": "withdrawBold",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_troveId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_boldAmount",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_maxUpfrontFee",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "name": "withdrawColl",
+    "type": "function",
+    "inputs": [
+      {
+        "name": "_troveId",
+        "type": "uint256",
+        "internalType": "uint256"
+      },
+      {
+        "name": "_amount",
+        "type": "uint256",
+        "internalType": "uint256"
+      }
+    ],
+    "outputs": [],
+    "stateMutability": "nonpayable"
+  },
+  {
+    "type": "receive",
+    "stateMutability": "payable"
+  }
+]
